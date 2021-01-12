@@ -9,9 +9,40 @@ export default function Maincontent({setSelectedImage})
     
     useEffect(()=>{
         fetch("https://raw.githubusercontent.com/Lokenath/MyRepo/master/Test/package.json").then((res)=>res.json()).then((data)=>{
-            setData(data.pics);
+            setData(data.pics.map((item)=>{
+                return {
+                    ...item,
+                    liked: false
+                }
+            }));
         })
-    })
+    },[])
+
+
+    let handlePostClick = (e,id) => 
+    {
+        e.stopPropagation();
+        let newData = data.map((item)=>{
+            if(item.id==id)
+            {
+
+            return    {
+                    ...item,
+                    comments :  [...item.comments,postText[id]]
+                }
+              
+            }
+            else
+            {
+                return {...item}
+            }
+        });
+
+        setData(newData);
+        let obj = {...postText}
+        obj[id]="";
+        setPostText(obj);
+    }
 
     let handlepostText = (e,id) => 
     {
@@ -19,31 +50,56 @@ export default function Maincontent({setSelectedImage})
         let post = e.target.value;
         let obj = {
             ...postText,
-            [carditem]:post
         }
+        obj[carditem]=post;
 
         setPostText(obj);
 
     }
 
+    let handleLike = (e,id) => 
+    {
+        e.stopPropagation();
+        let newData = data.map((item)=>{
+            if(item.id==id)
+            {
+             return ({...item,
+                    liked:!item.liked,
+                    likes: item.liked == false ? item.likes+1 : item.likes-1
+            })   
+            }else
+            {
+                return {
+                    ...item
+                }
+            }
+        })
+        setData(newData);
+    }
     return (<div class="grid">
 
 {data.map((item)=>{
 
 
-return ( <div className="card">
+return ( <div key = {item.id} className="card">
 <div className="img-container" onClick = {() => setSelectedImage(item.url)}>
   <img className="img" src={item.url}></img>
 </div>
 <div class="comment-section">
     <div className="likes-container">
     <div className="likes">{item.likes} </div>
-    <div className="like"><a href="#">Like</a> </div>
+    <div className="like" onClick={(e)=>{handleLike(e,item.id)}}><p className="like-link">{item.liked ? "Unlike" : "Like"}</p> </div>
     <div className="category">{item.category}</div>
     </div>
-    <div className="search-container">  <input placeholder="Type your comment here..." value={postText[item.id]} onChange={(e)=>{
-        handlepostText(e,item.id);
-    }} className="search-box"></input>  <button className="post-button">POST</button> </div>
+    <div className="search-container"> 
+     <input placeholder="Type your comment here..."  
+     onClick={(e)=>{e.stopPropagation()}} value={postText[item.id]} 
+     onChange={(e)=>{
+       e.stopPropagation();
+       handlepostText(e,item.id);
+    }} className="search-box"></input>  <button onClick={(e)=>{
+        handlePostClick(e,item.id);
+    }} className="post-button">POST</button> </div>
 </div>
 <div className="comments-container">
 

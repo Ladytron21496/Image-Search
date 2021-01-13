@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from "react";
 
 
-export default function Maincontent({setSelectedImage})
+export default function Maincontent({setSelectedImage,filterTerm})
 {
 
     const[data,setData] = useState([]);
@@ -78,9 +78,9 @@ export default function Maincontent({setSelectedImage})
     }
     return (<div class="grid">
 
-{data.map((item)=>{
-
-
+{data.filter((item)=>{
+    return (item.category.toLowerCase().includes(filterTerm.toLowerCase()))
+}).map((item)=>{
 return ( <div key = {item.id} className="card">
 <div className="img-container" onClick = {() => setSelectedImage(item.url)}>
   <img className="img" src={item.url}></img>

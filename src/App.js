@@ -13,12 +13,12 @@ function App() {
   const [mostCommented,setMostCommented] = useState(false);
 
   return (
-    <>
-   <Header/>
-    <Searchsection searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
-   <Maincontent filterTerm={searchTerm} setSelectedImage = {setSelectImage} />
-   {selectImage && <ImageModal selectImage = {selectImage} setSelectedImage = {setSelectImage}/>}
-   </>
+  <>
+    <Header/>
+    <Searchsection setMostLiked={setMostLiked} setMostCommented={setMostCommented} searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+    <Maincontent setMostLiked={setMostLiked} setMostCommented={setMostCommented} mostLiked={mostLiked} mostCommented={mostCommented} filterTerm={searchTerm} setSelectedImage = {setSelectImage} />
+    {selectImage && <ImageModal selectImage = {selectImage} setSelectedImage = {setSelectImage}/>}
+  </>
   );
 }
 

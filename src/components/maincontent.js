@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from "react";
 
 
-export default function Maincontent({setSelectedImage,filterTerm})
+export default function Maincontent({setSelectedImage,filterTerm,mostLiked , mostCommented , setMostLiked , setMostCommented})
 {
 
     const[data,setData] = useState([]);
@@ -17,6 +17,42 @@ export default function Maincontent({setSelectedImage,filterTerm})
             }));
         })
     },[])
+
+
+    useEffect(()=>{
+
+        if(mostLiked==true)
+        {
+
+            let newData = [...data].sort((a,b)=>{
+                if(a.likes>b.likes)
+                {
+                    return -1;
+                }else
+                {
+                    return 1;
+                }
+            })
+            setData(newData);
+        }
+        if(mostCommented)
+        {
+            let newData = [...data].sort((a,b)=>{
+                if(a.comments.length>b.comments.length)
+                {
+                    return -1;
+                }else
+                {
+                    return 1;
+                }
+            })
+            setData(newData); 
+        }
+
+     setMostLiked(false);
+     setMostCommented(false);
+
+    },[mostLiked,mostCommented]);
 
 
     let handlePostClick = (e,id) => 

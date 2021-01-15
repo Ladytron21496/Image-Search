@@ -150,6 +150,9 @@
   .main-searchbox {
     width: 150px;
   }
+  .most-commented {
+    margin-left: 10px;
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -161,5 +164,8 @@
   }
   .main-searchbox {
     width: 150px;
+  }
+  .most-commented {
+    margin-left: 10px;
   }
 }
